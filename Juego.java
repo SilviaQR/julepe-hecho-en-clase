@@ -106,9 +106,19 @@ public class Juego
      * @param nombre El nombre del jugador a buscar
      * @return La posición del jugador buscado o -1 en caso de no hallarlo.
      */
-    private int encontrarPosicionJugadorPorNombre(String nombre)
+    public int encontrarPosicionJugadorPorNombre(String nombre)
     {
-        
+        int posicion = 0;
+        boolean buscando = false;
+        while(posicion < jugadores.length && buscando == false){    
+            if(nombre.equals(jugadores[posicion].getNombre())){
+                buscando = true;
+            }
+            else{
+                posicion++;
+            }
+        }
+        return posicion;
     }
     
         
