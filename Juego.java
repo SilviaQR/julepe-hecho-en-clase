@@ -11,8 +11,9 @@ public class Juego
 {
     private Jugador[] jugadores;
     private Mazo mazo;
-    private int paloQuePinta;
+    private Palo paloQuePinta;
 
+    private static final int NUMERO_DE_RONDAS = 5;
     /**
      * Constructor de la clase Juego
      *
@@ -64,7 +65,7 @@ public class Juego
      *
      * @return El palo que pinta tras repartir
      */
-    private int repartir() 
+    private Palo repartir() 
     {
         mazo.barajar();
 
@@ -78,16 +79,16 @@ public class Juego
 
         paloQuePinta = nuevaCarta.getPalo();
         switch (paloQuePinta) {
-            case 0:
+            case OROS:
             System.out.println("Pintan oros");
             break;
-            case 1:
+            case COPAS:
             System.out.println("Pintan copas");
             break;
-            case 2:
+            case ESPADAS:
             System.out.println("Pintan espadas");
             break;
-            case 3:
+            case BASTOS:
             System.out.println("Pintan bastos");
             break;
         }
@@ -104,15 +105,13 @@ public class Juego
      */
     private int encontrarPosicionJugadorPorNombre(String nombre)
     {
-        int posicion = 0;
-        boolean buscando = false;
-        while(posicion < jugadores.length && buscando == false){    
-            if(nombre.equals(jugadores[posicion].getNombre())){
-                buscando = true;
+        int posicion = -1;
+        int posicionJugadorActual = 0;
+        while(posicionJugadorActual < jugadores.length && posicion == -1){    
+            if(nombre.equals(jugadores[posicionJugadorActual].getNombre())){
+                posicion = posicionJugadorActual;
             }
-            else{
-                posicion++;
-            }
+            posicionJugadorActual++;
         }
         return posicion;
     }
@@ -140,16 +139,16 @@ public class Juego
      *    bazas) o "no es julepe".
      *
      */
-    public void jugar()
+    private void jugar()
     {
         repartir();
-        jugadores[0].verCartasJugador();
         Scanner sc = new Scanner(System.in);
         int contadorJugadas = 0;
-        while(contadorJugadas < 5){
+        while(contadorJugadas < NUMERO_DE_RONDAS){
             Baza baza = new Baza(jugadores.length, paloQuePinta);
             boolean cartaValida = false;
             while(cartaValida == false){
+                jugadores[0].verCartasJugador();
                 System.out.println("Tira una carta de tu mano: ");
                 String cartaIntroducida = sc.nextLine();
                 Carta cartaTirada = jugadores[0].tirarCarta(cartaIntroducida);
@@ -162,7 +161,7 @@ public class Juego
                 }
             }
             for(int posicion = 1; posicion < jugadores.length; posicion++){
-                Carta cartaOtrosJugadores = jugadores[posicion].tirarCartaAleatoria();
+                Carta cartaOtrosJugadores = jugadores[posicion].tirarCartaInteligentemente(baza.getPaloPrimeraCartaDeLaBaza(), baza.cartaQueVaGanandoLaBaza(), paloQuePinta);
                 baza.addCarta(cartaOtrosJugadores, jugadores[posicion].getNombre());
             }
             String ganador = baza.nombreJugadorQueVaGanandoLaBaza();
