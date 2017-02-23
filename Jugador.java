@@ -121,24 +121,41 @@ public class Jugador
         Carta miCarta  = null;
         boolean gana = false;
         int posicion = 0;
-        //
+        // Primero se recorren las cartas de la mano
         while(posicion < cartasQueTieneEnLaMano.length && gana == false){
+            // Se guardara en la variable local miCarta la carta que se encuentra en la posicion anterior
             miCarta = cartasQueTieneEnLaMano[posicion];
             if(miCarta != null){
-                if (miCarta.ganaA(cartaQueVaGanando, paloQuePinta)) {
-                    gana = true;
-                }    
-                else{
-                    if(miCarta.getPalo() == paloPrimeraCartaDeLaBaza) {
+                // Se comprueba si miCarta es del mismo palo de la primera carta de la baza
+                if(miCarta.getPalo() == paloPrimeraCartaDeLaBaza) {
+                    // Si mi carta es del palo de la primera carta de la baza, se comprueba si su valor es mayor. Si no, se tira una carta del palo de
+                    // la primera carta de la baza
+                    if(miCarta.getPosicionEscalaTute() > cartaQueVaGanando.getPosicionEscalaTute()){
+                        gana = true;
+                    } 
+                    else{
                         gana = true;
                     }
                 }
             }
             posicion++;
         }
+         // Si no tengo cartas del palo de la primera carta de la baza, tiro una carta del palo que pinta, la de mayor valor, solo se cumple si ya se ha recorrido la mano
         if(posicion == cartasQueTieneEnLaMano.length){
-            miCarta = tirarCartaAleatoria();
+            int index = 0;
+            while(index < cartasQueTieneEnLaMano.length && gana == false){
+                miCarta = cartasQueTieneEnLaMano[index];
+                if (miCarta != null && miCarta.ganaA(cartaQueVaGanando, paloQuePinta)) {
+                    gana = true;
+                }   
+                index++;
+            }
+            // Una vez recorrida la mano por segunda vez, si no hay cartas para tirar, se tira una carta aleatoria
+            if(gana == false && index == cartasQueTieneEnLaMano.length) {
+                miCarta = tirarCartaAleatoria();
+            }
         }
+
         tirarCarta(miCarta.toString());
         return miCarta;
     }

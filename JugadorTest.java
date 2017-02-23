@@ -41,17 +41,13 @@ public class JugadorTest
         carta2 = new Carta(2, Palo.COPAS);
         carta3 = new Carta(3, Palo.ESPADAS);
         carta4 = new Carta(4, Palo.COPAS);
+        carta5 = new Carta(5, Palo.OROS);
+        carta6 = new Carta(3, Palo.OROS);
         jugador1.recibirCarta(carta1);
         jugador1.recibirCarta(carta2);
         jugador1.recibirCarta(carta3);
         jugador1.recibirCarta(carta4);
-        jugador1.verCartasJugador();
-        carta5 = new Carta(5, Palo.OROS);
-        jugador1.verCartasJugador();
-        carta6 = new Carta(3, Palo.OROS);
-        jugador1.verCartasJugador();
         jugador1.recibirCarta(carta5);
-        jugador1.verCartasJugador();
     }
 
     /**
